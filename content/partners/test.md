@@ -2,6 +2,6 @@
 title: test
 country: Switzerland
 category: BWL / Economics
-location: '{"type":"Point","coordinates":[7.3951721,47.0097575]}'
+location: '{"type":"Point","coordinates":[7.79046,47.2101161]}'
 ---
 adsfeatsdt

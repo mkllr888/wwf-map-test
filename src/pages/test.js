@@ -3,7 +3,7 @@ import matter from 'gray-matter';
 import styles from '../../styles/Home.module.css';
 import Map from '../components/Map';
 import dynamic from 'next/dynamic';
-import { Button, Search } from 'semantic-ui-react';
+import {Button, Grid, Header, Search} from 'semantic-ui-react';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 
@@ -96,25 +96,48 @@ const Test = ({ partnerData }) => {
                 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
             </Head>
             <article>
-                <h1>{filteredData.map((el) => el.content)}</h1>
-                <Button.Group>
-                    <Button onClick={() => setFilter(false)} active={!filter}>
-                        Alle
-                    </Button>
-                    {categories.map((cat) => (
-                        <Button onClick={() => setFilter(cat)} active={filter === cat}>
-                            {cat}
-                        </Button>
-                    ))}
-                </Button.Group>
+                <Grid columns={2} stackable>
+                    <Grid.Row>
+                        <Grid.Column
+                            width={8}
+                            textAlign="left"
+                            floated="left"
+                            verticalAlign="middle"
 
-                <Search
-                    loading={loading}
-                    onSearchChange={handleSearchChange}
-                    open={false}
-                    value={value}
-                    aligned="right"
-                />
+                        >
+                            <Button.Group>
+                                <Button onClick={() => setFilter(false)} active={!filter}>
+                                    Alle
+                                </Button>
+                                {categories.map((cat) => (
+                                    <Button onClick={() => setFilter(cat)} active={filter === cat}>
+                                        {cat}
+                                    </Button>
+                                ))}
+                            </Button.Group>
+                        </Grid.Column>
+                        <Grid.Column
+                            width={4}
+                            textAlign="right"
+                            floated="right"
+                            verticalAlign="middle"
+                            stretched
+                        >
+                            <Header as="h4">
+                                Search:
+                            </Header>
+                        </Grid.Column>
+                        <Grid.Column width={4} textAlign="right" floated="right">
+                            <Search
+                                loading={loading}
+                                onSearchChange={handleSearchChange}
+                                open={false}
+                                value={value}
+                                aligned="right"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
 
                 <Map className={styles.homeMap} center={[8.5466092, 47.3755914]} zoom={12}>
                     {({ TileLayer, Marker, Popup }) => (

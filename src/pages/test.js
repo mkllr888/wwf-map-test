@@ -11,11 +11,14 @@ const MarkerClusterGroup = dynamic(() => import("react-leaflet-markercluster/src
 });
 
 const Test = ({partnerData}) => {
-    const [filter, setFilter] = useState(true);
+    const [filter, setFilter] = useState(false);
     let filteredData = partnerData;
     if (filter) {
-        filteredData = partnerData.filter((el, index) => index % 2 === 0)
+        filteredData = partnerData.filter((el, index) => el.category === filter)
     }
+
+    // extract all unique categories to create buttons dynamically
+    const categories = [...new Set(partnerData.map(element => element.category))]
 
     const filteredGroupedData = filteredData.reduce((filteredGroupedData, item) => {
         const group = (filteredGroupedData[item.country] || []);
@@ -33,18 +36,16 @@ const Test = ({partnerData}) => {
             <article>
                 <h1>{filteredData.map(el => el.content)}</h1>
                 <Button.Group>
-                    <Button onClick={() => {
-                        console.log("filter:", filter)
-                        setFilter(true)
-                    }} active={filter}>
-                        Filter ON
+                    <Button onClick={() => setFilter(false)} active={!filter}>
+                        Alle
                     </Button>
-                    <Button onClick={() => {
-                        console.log("filter:", filter)
-                        setFilter(false)
-                    }} active={!filter}>
-                        Filter OFF
-                    </Button>
+                    {
+                        categories.map( cat => (
+                            <Button onClick={() => setFilter(cat)} active={filter === cat}>
+                                {cat}
+                            </Button>
+                        ))
+                    }
                 </Button.Group>
 
                 <Map className={styles.homeMap} center={[8.5466092,47.3755914]} zoom={12}>
@@ -54,17 +55,22 @@ const Test = ({partnerData}) => {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                             />
-                            <MarkerClusterGroup>
                                 {
-                                    Object.values(filteredGroupedData).flat().map(element => (
-                                    <Marker position={element.location.coordinates}>
-                                        <Popup>
-                                            {element.title}
-                                        </Popup>
-                                    </Marker>
+                                    Object.keys(filteredGroupedData).map(country => (
+                                        <MarkerClusterGroup>
+                                            {
+                                                filteredGroupedData[country].map(university => (
+                                                    <Marker position={university.location.coordinates}>
+                                                        <Popup>
+                                                            {university.title}
+                                                        </Popup>
+                                                    </Marker>
+                                                ))
+                                            }
+                                        </MarkerClusterGroup>
+
                                 ))
                                 }
-                            </MarkerClusterGroup>
                         </>
                     )}
                 </Map>

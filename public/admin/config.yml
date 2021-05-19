@@ -31,7 +31,7 @@ collections:
         name: "category"
         widget: "select"
         options:
-          - { label: "BWL / Economics", value: "econ" }
-          - { label: "Informatics", value: "info" }
+          - { label: "BWL / Economics", value: "BWL / Economics" }
+          - { label: "Informatics", value: "Informatics" }
       - { label: "Location", name: "location", widget: "map" }
       - { label: "Popup Body", name: "body", widget: "markdown" }

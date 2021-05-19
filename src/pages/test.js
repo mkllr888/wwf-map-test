@@ -77,11 +77,11 @@ const Test = ({partnerData}) => {
 export async function getStaticProps() {
     const fs = require("fs");
 
-    const files = fs.readdirSync(`${process.cwd()}/src/content/partners`);
+    const files = fs.readdirSync(`${process.cwd()}/content/partners`);
     const partners = files.filter((fn) => fn.endsWith(".md"));
 
     let data = partners.map((partner) => {
-        const path = `${process.cwd()}/src/content/partners/${partner}`;
+        const path = `${process.cwd()}/content/partners/${partner}`;
         const rawContent = fs.readFileSync(path, {
             encoding: "utf-8",
         });

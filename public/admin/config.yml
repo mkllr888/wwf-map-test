@@ -28,11 +28,11 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string"}
       - { label: "Country", name: "country", widget: "string" }
+      - label: 'Category'
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "BWL / Economics", value: "econ" }
+          - { label: "Informatics", value: "info" }
       - { label: "Location", name: "location", widget: "map" }
       - { label: "Popup Body", name: "body", widget: "markdown" }
-      - label: "Category"
-          name: "category"
-          widget: "select"
-          options:
-            - { label: "BWL / Economics", value: "econ" }
-            - { label: "Informatics", value: "info" }

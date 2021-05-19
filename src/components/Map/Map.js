@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import L from 'leaflet';
 import * as ReactLeaflet from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 
 import styles from './Map.module.css';
 

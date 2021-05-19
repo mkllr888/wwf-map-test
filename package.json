@@ -11,13 +11,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-react": "^7.13.13",
     "leaflet": "^1.7.1",
     "next": "10.0.3",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.6.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-leaflet": "^3.0.4"
+    "react-leaflet": "^3.0.4",
+    "react-leaflet-markercluster": "*",
+    "webpack": "^4.44.2"
   },
   "repository": {
     "type": "git",
@@ -25,5 +29,8 @@
   },
   "bugs": {
     "url": "https://github.com/colbyfayock/next-leaflet-starter/issues"
+  },
+  "devDependencies": {
+    "frontmatter-markdown-loader": "^3.6.2"
   }
 }

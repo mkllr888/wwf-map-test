@@ -1,8 +1,9 @@
 backend:
-  name: git-gateway
+  name: test-repo
   branch: main # Branch to update (optional; defaults to master)
 media_folder: public/img
 public_folder: img
+local_backend: true # run npx netlify-cms-proxy-server for local testing
 collections:
   - name: "pages"
     label: "Pages"

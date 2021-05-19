@@ -12,4 +12,6 @@ module.exports = withPlugins([withImages({
         )
         return config;
     }
-})])
+})], {
+    basePath: '/static/test/out',
+})

@@ -13,7 +13,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Link href="/mappage">
+      <Link href="/test">
         <a>Einverstanden, will Karte anzeigen</a>
       </Link>
     </div>

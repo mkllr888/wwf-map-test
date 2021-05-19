@@ -139,7 +139,7 @@ const Test = ({ partnerData }) => {
                     </Grid.Row>
                 </Grid>
 
-                <Map className={styles.homeMap} center={[8.5466092, 47.3755914]} zoom={12}>
+                <Map className={styles.homeMap} center={[47.3755914, 8.5466092]} zoom={12}>
                     {({ TileLayer, Marker, Popup }) => (
                         <>
                             <TileLayer
@@ -149,7 +149,7 @@ const Test = ({ partnerData }) => {
                             {Object.keys(filteredGroupedData).map((country) => (
                                 <MarkerClusterGroup>
                                     {filteredGroupedData[country].map((university) => (
-                                        <Marker position={university.location.coordinates}>
+                                        <Marker position={university.location.coordinates.reverse()}>
                                             <Popup>{university.title}</Popup>
                                         </Marker>
                                     ))}
@@ -178,6 +178,7 @@ export async function getStaticProps() {
         return matter(rawContent);
     });
 
+    // WATCH OUT COORDINATES ARE SWITCHED (X, Y)
     data = data.map((element) => ({
         content: element.content,
         ...element.data,

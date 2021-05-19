@@ -2,6 +2,6 @@
 title: ETH
 country: Schweiz
 category: BWL / Economics
-location: '{"type":"Point","coordinates":[8.5469662,47.3762553]}'
+location: '{"type":"Point","coordinates":[8.5459417,47.3779125]}'
 ---
 This is ETH

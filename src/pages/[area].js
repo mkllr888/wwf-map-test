@@ -39,17 +39,13 @@ function filterReducer(state, action) {
     }
 }
 
-const Test = ({ partnerData }) => {
-    const [filter, setFilter] = useState(false);
+const Area = ({ partnerData, area }) => {
     let filteredData = partnerData;
-    if (filter) {
-        filteredData = partnerData.filter((el, index) => el.category === filter);
-    }
 
     const [state, dispatch] = React.useReducer(filterReducer, initialState);
     const { loading, results, value } = state;
 
-    filteredData = Array.isArray(results) ? results : filteredData;
+    filteredData = Array.isArray(results) ? results : partnerData;
     const timeoutRef = React.useRef();
     const handleSearchChange = React.useCallback((e, data) => {
         clearTimeout(timeoutRef.current);
@@ -64,7 +60,7 @@ const Test = ({ partnerData }) => {
             const re = new RegExp(_.escapeRegExp(data.value), 'i');
             const isMatch = (result) => {
                 console.log(result);
-                return re.test(`${result.title} ${result.content}`);
+                return re.test(`${result.title} ${result.content} ${result.url} ${result.agreement}`);
             };
 
             dispatch({
@@ -90,6 +86,8 @@ const Test = ({ partnerData }) => {
         return filteredGroupedData;
     }, {});
 
+
+
     return (
         <>
             <Head>
@@ -106,14 +104,15 @@ const Test = ({ partnerData }) => {
 
                         >
                             <Button.Group>
-                                <Button onClick={() => setFilter(false)} active={!filter}>
-                                    Alle
+                                <Button href="/static/test/out/all" active={area === "all"}>
+                                    All
                                 </Button>
-                                {categories.map((cat) => (
-                                    <Button onClick={() => setFilter(cat)} active={filter === cat}>
-                                        {cat}
-                                    </Button>
-                                ))}
+                                <Button href="/static/test/out/bwl" active={area === "bwl"}>
+                                    BWL / Economics
+                                </Button>
+                                <Button href="/static/test/out/info" active={area === "info"}>
+                                    Informatics
+                                </Button>
                             </Button.Group>
                         </Grid.Column>
                         <Grid.Column
@@ -139,7 +138,7 @@ const Test = ({ partnerData }) => {
                     </Grid.Row>
                 </Grid>
 
-                <Map className={styles.homeMap} center={[47.3755914, 8.5466092]} zoom={12}>
+                <Map className={styles.homeMap} center={[47.3755914, 8.5466092]} zoom={2}>
                     {({ TileLayer, Marker, Popup }) => (
                         <>
                             <TileLayer
@@ -150,7 +149,14 @@ const Test = ({ partnerData }) => {
                                 <MarkerClusterGroup>
                                     {filteredGroupedData[country].map((university) => (
                                         <Marker position={university.location.coordinates.reverse()}>
-                                            <Popup>{university.title}</Popup>
+                                            <Popup>
+                                                <h4>{university.title}</h4>
+                                                <p>
+                                                    Country: {university.country}<br/>
+                                                    Agreement: {university.agreement}<br />
+                                                    Link: <a href={university.url}>{(university.url && university.url.length > 45) ? `${university.url.substring(0,43)}...`: university.url   }</a>
+                                                </p>
+                                            </Popup>
                                         </Marker>
                                     ))}
                                 </MarkerClusterGroup>
@@ -163,7 +169,15 @@ const Test = ({ partnerData }) => {
     );
 };
 
-export async function getStaticProps() {
+export async function getStaticPaths() {
+    return {
+        paths: [{ params: { area: "all" } }, { params: { area: "bwl" } }, { params: { area: "info" } }],
+        fallback: false,
+    };
+}
+
+export async function getStaticProps({ params }) {
+
     const fs = require('fs');
 
     const files = fs.readdirSync(`${process.cwd()}/content/partners`);
@@ -179,13 +193,20 @@ export async function getStaticProps() {
     });
 
     // WATCH OUT COORDINATES ARE SWITCHED (X, Y)
-    data = data.map((element) => ({
-        content: element.content,
-        ...element.data,
-        location: JSON.parse(element.data.location)
-    }));
+    data = data.map((element) => (
+        {
+            content: element.content,
+            ...element.data,
+            location : JSON.parse(element.data.location)
+        }
+    ));
 
-    return { props: { partnerData: data } };
+    let filteredData = data;
+    if (params.area !== "all") {
+        filteredData = data.filter((el) => el.category.toLowerCase().includes(params.area));
+    }
+
+    return { props: { partnerData: filteredData, area: params.area } };
 }
 
-export default Test;
+export default Area;
